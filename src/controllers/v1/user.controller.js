@@ -12,7 +12,8 @@ const index = async (req, res = response) => {
         res.status(200).json({
             ok: true,
             message: 'Users encontrados',
-            users: result
+            users: result,
+            cantidad: result.length
         });
     }).catch(error => {
         /** Si lapetición esta mal mostrar el error. */
@@ -61,25 +62,7 @@ const update = async (req, res = response) => {
     const id = req.params.id;
 
     /** obtener el valor del body  */
-    const cuerpoUpdate = { name, email, password } = req.body;
-
-    /** schea de campos a validar */
-    const schema = {
-        name: { type: "string", optional: false, max: 100 },
-        email: { type: "string", optional: false, max: 100 }
-    }
-
-    /** respuesta de la validación que recibe los campos y las validaciones */
-    const validationResponse = v.validate(cuerpoUpdate, schema);
-
-    /** validar si es diferente a true */
-    if (validationResponse !== true) {
-        return res.status(400).json({
-            ok: false,
-            message: 'Validación fallida.',
-            error: validationResponse
-        })
-    }
+    const cuerpoUpdate = { name, email } = req.body;
 
     await models.User.update(cuerpoUpdate, { where: { id: id } }).then(result => {
         if (result) {

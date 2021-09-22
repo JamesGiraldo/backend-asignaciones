@@ -62,23 +62,6 @@ const save = async(req, res = response) => {
         userId: 1
     };    
 
-    /** schea de campos a validar */
-    const schema = {        
-        content: { type: "string", optional: false, max: 500 },        
-        postId: { type: "number", optional: false }        
-    }
-    /** respuesta de la validación que recibe los campos y las validaciones */
-    const validationResponse = v.validate( cuerpo , schema );
-
-    /** validar si es diferente a true */
-    if ( validationResponse !== true ) {
-        return res.status(400).json({
-            ok: false,
-            message: 'Validación fallida.',
-            error: validationResponse
-        })
-    }
-
     await models.Commet.create( cuerpo ).then( result =>  {
         res.status(201).json({
             ok: true,
@@ -103,27 +86,10 @@ const update = async(req, res = response) => {
     
     /** obtener el valor del body  */        
     const cuerpoUpdate = { 
-        content: req.body.content,        
+        ...req.body,        
         postId: req.body.post_id        
     };    
     const userId = 1;
-
-    /** schea de campos a validar */
-    const schema = {        
-        content: { type: "string", optional: false, max: 500 },
-        postId: { type: "number", optional: false }
-    }
-    /** respuesta de la validación que recibe los campos y las validaciones */
-    const validationResponse = v.validate( cuerpoUpdate , schema );
-
-    /** validar si es diferente a true */
-    if ( validationResponse !== true ) {
-        return res.status(400).json({
-            ok: false,
-            message: 'Validación fallida.',
-            error: validationResponse
-        })
-    }
 
     await models.Commet.update( cuerpoUpdate, { where: { id: id, userId: userId } } ).then( result =>  {
         if ( result ) {            

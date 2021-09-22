@@ -15,25 +15,7 @@ const updatePasswrod = async (req, res = response) => {
     const cuerpoUpdate = { password, lastPassword } = req.body;
 
     await models.User.findByPk(id).then(user => {
-
-        /** schea de campos a validar */
-        const schema = {
-            password: { type: "string", optional: false, max: 150 },
-            lastPassword: { type: "string", optional: false, max: 150 }
-        }
-
-        /** respuesta de la validación que recibe los campos y las validaciones */
-        const validationResponse = v.validate(cuerpoUpdate, schema);
-
-        /** validar si es diferente a true */
-        if (validationResponse !== true) {
-            return res.status(400).json({
-                ok: false,
-                message: 'Los campos son requeridos.',
-                error: validationResponse
-            })
-        }
-
+      
         if (user) {
 
             /** Verificar Contraseña encriptada. */

@@ -5,6 +5,7 @@ const path = require('path');
 /** requerir el archivos de ruta */
 route.use( require('./auth') );
 route.use( require('./category') );
+route.use( require('./curso') );
 route.use( require('./user') );
 route.use( require('./commet') );
 route.use( require('./post') );
